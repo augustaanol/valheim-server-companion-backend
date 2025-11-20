@@ -1,26 +1,24 @@
-from fastapi import FastAPI, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-from app import database, crud, schemas, models
+from fastapi import FastAPI
+from contextlib import asynccontextmanager
 
-app = FastAPI(title="Valheim Companion API")
+from app.database import engine
+from app.models import Base
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Starting FastAPI + PostgreSQL…")
 
-# create tables on startup
-@app.on_event("startup")
-async def startup():
-    async with database.engine.begin() as conn:
-        await conn.run_sync(models.Base.metadata.create_all)
+    # Utworzenie modeli przy starcie
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
+    yield
 
-@app.post("/logs/", response_model=schemas.PlayerLogCreate)
-async def add_log(
-    log: schemas.PlayerLogCreate, session: AsyncSession = Depends(database.get_session)
-):
-    return await crud.create_log(session, log)
+    print("Shutting down…")
+    await engine.dispose()
 
+app = FastAPI(lifespan=lifespan)
 
-@app.get("/logs/")
-async def read_logs(
-    limit: int = 100, session: AsyncSession = Depends(database.get_session)
-):
-    return await crud.get_logs(session, limit)
+@app.get("/")
+async def root():
+    return {"status": "ok"}
