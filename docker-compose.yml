@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  fastapi:
+    build: .
+    container_name: fastapi_valheim
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    environment:
+      - PORTAINER_URL=${PORTAINER_URL}
+      - PORTAINER_TOKEN=${PORTAINER_TOKEN}
+      - PORTAINER_ENDPOINT_ID=${PORTAINER_ENDPOINT_ID}
+      - PORTAINER_CONTAINER_NAME=${PORTAINER_CONTAINER_NAME}
+      - VALHEIM_HOST_IP=${VALHEIM_HOST_IP}
+      - VALHEIM_STATUS_PORT=${VALHEIM_STATUS_PORT}
