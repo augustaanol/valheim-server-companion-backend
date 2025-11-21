@@ -12,6 +12,7 @@ app = FastAPI(title="Valheim Companion API")
 origins = [
     "http://localhost:3000",  # Next.js dev
     "http://127.0.0.1:3000",
+    "http://100.96.243.7:3000",  # Tailscale IP przykładowy
     "*",  # w produkcji Tailscale możesz zostawić *
 ]
 
