@@ -3,7 +3,7 @@ version: "3.9"
 services:
   fastapi:
     build: .
-    container_name: fastapi_valheim
+    container_name: valheim-server-companion-backend
     ports:
       - "8000:8000"
     restart: unless-stopped
