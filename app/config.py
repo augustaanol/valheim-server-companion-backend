@@ -1,0 +1,11 @@
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+VALHEIM_HOST_IP = os.getenv("VALHEIM_HOST_IP")
+VALHEIM_STATUS_PORT = os.getenv("VALHEIM_STATUS_PORT")
+PORTAINER_URL = os.getenv("PORTAINER_URL")
+PORTAINER_TOKEN = os.getenv("PORTAINER_TOKEN")
+PORTAINER_CONTAINER_NAME = os.getenv("PORTAINER_CONTAINER_NAME")
+PORTAINER_ENDPOINT_ID = os.getenv("PORTAINER_ENDPOINT_ID")

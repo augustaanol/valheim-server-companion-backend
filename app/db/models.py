@@ -1,10 +1,16 @@
 from sqlalchemy import (
-    Column, Integer, String, DateTime, ForeignKey, Boolean,
-    Enum, Float
+    Column,
+    Integer,
+    String,
+    DateTime,
+    ForeignKey,
+    Boolean,
+    Enum,
+    Float,
 )
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from database import Base
+from app.db.database import Base
 import enum
 
 
@@ -17,7 +23,7 @@ class EventType(str, enum.Enum):
     LOGOUT = "logout"
 
     # PLAYER STATE / MOVEMENT
-    CROUCH = "crouch"              # wciśnięcie/przytrzymanie/zwolnienie
+    CROUCH = "crouch"  # wciśnięcie/przytrzymanie/zwolnienie
     SKILL_INCREASE = "skill_increase"
     SKILL_DECREASE = "skill_decrease"
 
@@ -44,7 +50,6 @@ class EventType(str, enum.Enum):
 
     # SOCIAL / COMMUNICATION
     PLAYER_PING = "player_ping"
-
 
 
 # ------------------------
@@ -88,7 +93,7 @@ class EventLog(Base):
 
     session_id = Column(Integer, ForeignKey("player_sessions.id"), nullable=True)
     event_type = Column(Enum(EventType))
-    value = Column(Float, nullable=True)  
+    value = Column(Float, nullable=True)
     # Np:
     # - DAMAGE = liczba obrażeń
     # - HEAL = ilość leczenia

@@ -1,24 +1,28 @@
 from fastapi import FastAPI
-from contextlib import asynccontextmanager
+from app.api.endpoints import server_status, container_control
+from fastapi.middleware.cors import CORSMiddleware
 
-from app.database import engine
-from app.models import Base
+app = FastAPI(title="Valheim Companion API")
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    print("Starting FastAPI + PostgreSQL…")
+# ----------------------------
+# Konfiguracja CORS
+# ----------------------------
+# allow_origins = ["http://localhost:3000"]  -> dev Next.js
+# lub ["*"] jeśli chcesz otworzyć na wszystkie źródła (prywatne Tailscale)
+origins = [
+    "http://localhost:3000",  # Next.js dev
+    "http://127.0.0.1:3000",
+    "*",  # w produkcji Tailscale możesz zostawić *
+]
 
-    # Utworzenie modeli przy starcie
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-    yield
-
-    print("Shutting down…")
-    await engine.dispose()
-
-app = FastAPI(lifespan=lifespan)
-
-@app.get("/")
-async def root():
-    return {"status": "ok"}
+# Rejestracja routerów
+app.include_router(server_status.router, prefix="/api")
+app.include_router(container_control.router, prefix="/api")
