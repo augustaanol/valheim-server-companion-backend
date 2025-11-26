@@ -5,9 +5,13 @@ from app.config import (
     VALHEIM_RCON_PASSWORD
 )
 
-async def rcon_connection():
+async def rcon_command(command: str, *args):
     response = await rcon(
-        'some_command', 'with', 'some', 'arguments',
-        host=VALHEIM_HOST_IP, port=VALHEIM_RCON_PORT, passwd=VALHEIM_RCON_PASSWORD
+        command, 
+        *args,   # przekazuje tylko istniejące argumenty
+        host=VALHEIM_HOST_IP,
+        port=VALHEIM_RCON_PORT,
+        passwd=VALHEIM_RCON_PASSWORD
     )
     print(response)
+    return response
