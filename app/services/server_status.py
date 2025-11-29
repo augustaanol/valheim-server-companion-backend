@@ -12,7 +12,6 @@ import re
 from math import floor
 
 
-
 def parse_players(text: str):
     players = []
 
@@ -33,7 +32,9 @@ def parse_players(text: str):
             player["steam_id"] = match_steam.group(1)
 
         # Position (x y z)
-        match_pos = re.search(r"Position:\s*\(([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)\)", line)
+        match_pos = re.search(
+            r"Position:\s*\(([-\d\.]+)\s+([-\d\.]+)\s+([-\d\.]+)\)", line
+        )
         if match_pos:
             player["position"] = (
                 float(match_pos.group(1)),
@@ -65,9 +66,6 @@ def parse_players(text: str):
         players.append(player)
 
     return players
-
-
-
 
 
 async def get_valheim_status():
@@ -112,15 +110,18 @@ async def assemble_server_status():
     elif valheim_status is None:
         server_status = "starting"
     else:
-        server_status = "online"  
-       
+        server_status = "online"
 
     result = {
         "server_name": valheim_status.get("server_name") if valheim_status else None,
         "server_status": server_status,
         "steam_id": valheim_status.get("steam_id") if valheim_status else None,
         "player_count": valheim_status.get("player_count") if valheim_status else 0,
-        "players": parse_players(await rcon_command("players")) if valheim_status else [],
+        "players": (
+            parse_players(await rcon_command("players"))
+            if valheim_status == "running"
+            else []
+        ),
     }
 
     return result
