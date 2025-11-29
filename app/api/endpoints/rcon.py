@@ -11,5 +11,5 @@ async def server_status():
     responses.append(await rcon_command("currentEvent"))
     responses.append(await rcon_command("eventsList"))
     responses.append(await rcon_command("players"))
-    responses.append(await rcon_command("findPlayer 76561198271197381"))
+    responses.append(await rcon_command("time"))
     return responses
