@@ -100,7 +100,7 @@ async def get_portainer_container_status():
             return "error"
 
 
-async def assemble_server_status():
+async def getServerStatus():
     container_status = await get_portainer_container_status()
     valheim_status = await get_valheim_status()
 
@@ -111,6 +111,14 @@ async def assemble_server_status():
         server_status = "starting"
     else:
         server_status = "online"
+
+    return server_status, valheim_status
+
+
+async def assemble_server_status():
+    status = await getServerStatus()
+    server_status = status[0]
+    valheim_status = status[1]
 
     result = {
         "server_name": valheim_status.get("server_name") if valheim_status else None,

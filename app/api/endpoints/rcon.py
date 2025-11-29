@@ -12,4 +12,5 @@ async def server_status():
     responses.append(await rcon_command("eventsList"))
     responses.append(await rcon_command("players"))
     responses.append(await rcon_command("time"))
+    responses.append(await rcon_command("globalKeys"))
     return responses

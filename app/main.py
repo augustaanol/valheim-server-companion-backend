@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api.endpoints import server_status, container_control, rcon
+from app.api.endpoints import server_status, container_control, rcon, server_stats
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Valheim Companion API")
@@ -28,3 +28,4 @@ app.add_middleware(
 app.include_router(server_status.router, prefix="/api")
 app.include_router(container_control.router, prefix="/api")
 app.include_router(rcon.router, prefix="/api")
+app.include_router(server_stats.router, prefix="/api")
