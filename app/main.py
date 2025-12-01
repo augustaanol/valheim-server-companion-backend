@@ -1,5 +1,11 @@
 from fastapi import FastAPI
-from app.api.endpoints import server_status, container_control, rcon, server_stats
+from app.api.endpoints import (
+    server_status,
+    container_control,
+    rcon,
+    server_stats,
+    teleport,
+)
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Valheim Companion API")
@@ -12,7 +18,8 @@ app = FastAPI(title="Valheim Companion API")
 origins = [
     "http://localhost:3000",  # Next.js dev
     "http://127.0.0.1:3000",
-    "http://100.96.243.7:3000",  # Tailscale IP przykładowy
+    "http://100.96.243.7:3000",
+    "http://192.168.200.113:3000",
     "*",  # w produkcji Tailscale możesz zostawić *
 ]
 
@@ -29,3 +36,4 @@ app.include_router(server_status.router, prefix="/api")
 app.include_router(container_control.router, prefix="/api")
 app.include_router(rcon.router, prefix="/api")
 app.include_router(server_stats.router, prefix="/api")
+app.include_router(teleport.router, prefix="/api")
