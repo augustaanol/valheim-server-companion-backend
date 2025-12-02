@@ -18,4 +18,4 @@ async def rcon_command(command: str, *args):
 
     except Exception as e:
         print(f"❌ RCON ERROR ({command}): {e}")
-        return ""  # zawsze zwróć string, żeby backend się nie wysypał
+        return f"❌ RCON ERROR ({command}): {e}"  # zawsze zwróć string, żeby backend się nie wysypał
