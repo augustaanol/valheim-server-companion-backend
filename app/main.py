@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.api.endpoints import (
     server_status,
-    container_control,
+    container_control_api,
     rcon,
     server_stats,
     teleport,
@@ -37,7 +37,7 @@ app.add_middleware(
 
 # Rejestracja routerów
 app.include_router(server_status.router, prefix="/api")
-app.include_router(container_control.router, prefix="/api")
+app.include_router(container_control_api.router, prefix="/api")
 app.include_router(rcon.router, prefix="/api")
 app.include_router(server_stats.router, prefix="/api")
 app.include_router(teleport.router, prefix="/api")
