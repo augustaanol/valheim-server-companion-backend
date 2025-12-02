@@ -1,10 +1,11 @@
 from fastapi import FastAPI
 from app.api.endpoints import (
-    server_status,
+    rcon_api,
+    server_stats_api,
     container_control_api,
-    rcon,
-    server_stats,
-    teleport,
+    server_status_api,
+    teleport_api,
+    container_resources_api,
 )
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -36,8 +37,9 @@ app.add_middleware(
 )
 
 # Rejestracja routerów
-app.include_router(server_status.router, prefix="/api")
+app.include_router(server_status_api.router, prefix="/api")
 app.include_router(container_control_api.router, prefix="/api")
-app.include_router(rcon.router, prefix="/api")
-app.include_router(server_stats.router, prefix="/api")
-app.include_router(teleport.router, prefix="/api")
+app.include_router(rcon_api.router, prefix="/api")
+app.include_router(server_stats_api.router, prefix="/api")
+app.include_router(teleport_api.router, prefix="/api")
+app.include_router(container_resources_api.router, prefix="/api")
