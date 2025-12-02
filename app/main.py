@@ -20,7 +20,11 @@ origins = [
     "http://127.0.0.1:3000",
     "http://100.96.243.7:3000",
     "http://192.168.200.113:3000",
-    "http://0.0.0.0:3000" "*",  # w produkcji Tailscale możesz zostawić *
+    "http://backend:3000",
+    "http://backend",
+    "http://frontend:3000",
+    "http://frontend",
+    "*",  # w produkcji Tailscale możesz zostawić *
 ]
 
 app.add_middleware(
