@@ -11,7 +11,7 @@ def extract_day_number(text: str):
 
 async def assemble_server_stats():
     result = {
-        "stats": [
+        "server_stats": [
             {"name": "Day", "value": extract_day_number(await rcon_command("time"))},
         ]
     }
