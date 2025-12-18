@@ -5,3 +5,6 @@ lub
 venv\Scripts\activate
 
 uvicorn app.main:app --reload
+
+alembic revision --autogenerate -m "add players table"
+alembic upgrade head

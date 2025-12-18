@@ -60,11 +60,11 @@ async def ensure_players_exist(
     # Przygotuj nowych
     new_players = [
         Player(
-            name=p.get("name", "Unknown"),
+            name=p["name"],
             steam_id=p["steam_id"],
         )
         for p in players
-        if p["steam_id"] not in existing_steam_ids
+        if (p.get("steam_id") not in existing_steam_ids and p.get("name"))
     ]
 
     if not new_players:
