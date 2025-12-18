@@ -6,6 +6,7 @@ from app.api.endpoints import (
     server_status_api,
     teleport_api,
     container_resources_api,
+    players_api
 )
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -43,3 +44,4 @@ app.include_router(rcon_api.router, prefix="/api")
 app.include_router(server_stats_api.router, prefix="/api")
 app.include_router(teleport_api.router, prefix="/api")
 app.include_router(container_resources_api.router, prefix="/api")
+app.include_router(players_api.router, prefix="/api")
