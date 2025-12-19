@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_db
 from app.schemas.player import PlayerOut
-from app.services.player_service import get_players, create_player
+from app.services.player_service import get_players
 
 router = APIRouter(prefix="/players", tags=["players"])
 

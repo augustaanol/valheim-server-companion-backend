@@ -6,11 +6,33 @@ from app.api.endpoints import (
     server_status_api,
     teleport_api,
     container_resources_api,
-    players_api
+    players_api,
+    tasks_api,
+    comments_api,
 )
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
+import asyncio
 
-app = FastAPI(title="Valheim Companion API")
+from app.services.player_sync import sync_players_loop
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # STARTUP
+    task = asyncio.create_task(sync_players_loop())
+
+    yield  # <- aplikacja działa
+
+    # SHUTDOWN
+    task.cancel()
+    try:
+        await task
+    except asyncio.CancelledError:
+        pass
+
+
+app = FastAPI(title="Valheim Companion API", lifespan=lifespan)
 
 # ----------------------------
 # Konfiguracja CORS
@@ -45,3 +67,5 @@ app.include_router(server_stats_api.router, prefix="/api")
 app.include_router(teleport_api.router, prefix="/api")
 app.include_router(container_resources_api.router, prefix="/api")
 app.include_router(players_api.router, prefix="/api")
+app.include_router(tasks_api.router, prefix="/api")
+app.include_router(comments_api.router, prefix="/api")

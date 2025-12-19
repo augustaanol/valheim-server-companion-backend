@@ -11,7 +11,6 @@ router = APIRouter()
 @router.get("/server-status")
 async def server_status(db: AsyncSession = Depends(get_db)):
 
-    result = await assemble_server_status()
-    await ensure_players_exist(db, result["players"])
+    result = await assemble_server_status(db)
 
     return result
