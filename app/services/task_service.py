@@ -1,28 +1,35 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
+from fastapi import HTTPException
 
 from app.db.models.task import Task
 from app.schemas.task import TaskCreate, TaskUpdate
-from fastapi import HTTPException
+from app.services.task_events import task_events
 
 
-async def create_task(db: AsyncSession, data: TaskCreate) -> Task:
+async def create_task(db: AsyncSession, data: TaskCreate):
     task = Task(
         title=data.title,
         description=data.description,
         tag=data.tag,
         creator_id=data.creator_id,
-        status="todo",
     )
 
     db.add(task)
     await db.commit()
+    await db.refresh(task)
 
-    # 🔁 PONOWNE POBRANIE Z RELACJAMI
+    # 🔥 PONOWNIE POBIERAMY TASKA JAK W GET
     result = await db.execute(
-        select(Task).options(selectinload(Task.comments)).where(Task.id == task.id)
+        select(Task)
+        .where(Task.id == task.id)
+        .options(
+            selectinload(Task.comments),
+        )
     )
+
+    await task_events.notify("tasks_updated")
 
     return result.scalar_one()
 
@@ -56,6 +63,8 @@ async def update_task(
         select(Task).options(selectinload(Task.comments)).where(Task.id == task_id)
     )
 
+    await task_events.notify("tasks_updated")
+
     return result.scalar_one()
 
 
@@ -71,3 +80,4 @@ async def delete_task(
 
     await db.delete(task)
     await db.commit()
+    await task_events.notify("tasks_updated")
