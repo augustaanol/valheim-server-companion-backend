@@ -4,6 +4,7 @@ from fastapi import HTTPException
 
 from app.db.models.comment import Comment
 from app.schemas.comment import CommentCreate
+from app.services.task_events import task_events
 
 
 async def add_comment(
@@ -20,6 +21,8 @@ async def add_comment(
     await db.commit()
     await db.refresh(comment)
 
+    await task_events.notify("tasks_updated")
+
     return comment
 
 
@@ -35,3 +38,5 @@ async def delete_comment(
 
     await db.delete(comment)
     await db.commit()
+
+    await task_events.notify("tasks_updated")
