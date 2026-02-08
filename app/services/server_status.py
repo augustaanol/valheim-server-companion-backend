@@ -14,7 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def get_valheim_status():
-    url = f"http://{VALHEIM_HOST_IP}:{VALHEIM_STATUS_PORT}/status.json"
+    url = f"http://{VALHEIM_HOST_IP}:{VALHEIM_STATUS_PORT}/status"
     async with httpx.AsyncClient(timeout=5.0) as client:
         try:
             response = await client.get(url)
