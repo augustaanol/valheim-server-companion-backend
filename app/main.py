@@ -10,6 +10,7 @@ from app.api.endpoints import (
     tasks_api,
     comments_api,
     task_events_api,
+    mods_list_api,
 )
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -71,3 +72,4 @@ app.include_router(players_api.router, prefix="/api")
 app.include_router(tasks_api.router, prefix="/api")
 app.include_router(comments_api.router, prefix="/api")
 app.include_router(task_events_api.router, prefix="/api")
+app.include_router(mods_list_api.router, prefix="/api")

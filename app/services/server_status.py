@@ -66,10 +66,9 @@ async def assemble_server_status(db: AsyncSession):
     valheim_status = status[1]
 
     result = {
-        "server_name": valheim_status.get("server_name") if valheim_status else None,
+        "server_name": valheim_status.get("name") if valheim_status else None,
         "server_status": server_status,
-        "steam_id": valheim_status.get("steam_id") if valheim_status else None,
-        "player_count": valheim_status.get("player_count") if valheim_status else 0,
+        "player_count": valheim_status.get("players") if valheim_status else 0,
         "active_players": (
             parse_players(await rcon_command("players"))
             if server_status == "online"
