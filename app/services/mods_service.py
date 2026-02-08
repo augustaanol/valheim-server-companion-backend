@@ -4,8 +4,6 @@ import logging
 from app.config import VALHEIM_HOST_IP, VALHEIM_STATUS_PORT, THUNDERSTORE_API
 
 # Konfiguracja logowania
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 
 async def extract_mods() -> list[dict]:
@@ -129,7 +127,7 @@ async def enrich_mods() -> list[dict]:
                     "latest_version": latest.get("version_number"),
                     "url": match.get("package_url")
                     or f"https://thunderstore.io/package/{match.get('owner')}/{match.get('name')}/",
-                    "description": match.get("description"),
+                    "download_url": latest.get("download_url"),
                 }
             )
         else:
