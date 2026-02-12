@@ -1,7 +1,6 @@
 from app.services.rcon_connection import rcon_command
-from app.services.mods_service import extract_mods
+from app.services.server_mod_service import extract_server_mods
 import re
-import httpx
 
 
 def extract_day_number(text: str):
@@ -15,7 +14,7 @@ async def assemble_server_stats():
     result = {
         "server_stats": [
             {"name": "Day", "value": extract_day_number(await rcon_command("time"))},
-            {"name": "Mods", "value": len((await extract_mods()))},
+            {"name": "Mods", "value": len((await extract_server_mods()))},
         ]
     }
 

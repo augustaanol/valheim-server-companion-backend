@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.api.endpoints import (
+    mods_api,
     rcon_api,
     server_stats_api,
     container_control_api,
@@ -10,7 +11,6 @@ from app.api.endpoints import (
     tasks_api,
     comments_api,
     task_events_api,
-    mods_list_api,
 )
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -18,12 +18,21 @@ import asyncio
 
 from app.services.player_sync import sync_players_loop
 
+from app.core.scheduler import start_scheduler, daily_mod_sync
+
+import os
+print("APP DATABASE_URL =", os.getenv("DATABASE_URL"))
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # STARTUP
     task = asyncio.create_task(sync_players_loop())
 
+    await daily_mod_sync()
+
+    # 🔁 scheduler co 24h
+    start_scheduler()
+    
     yield  # <- aplikacja działa
 
     # SHUTDOWN
@@ -72,4 +81,4 @@ app.include_router(players_api.router, prefix="/api")
 app.include_router(tasks_api.router, prefix="/api")
 app.include_router(comments_api.router, prefix="/api")
 app.include_router(task_events_api.router, prefix="/api")
-app.include_router(mods_list_api.router, prefix="/api")
+app.include_router(mods_api.router, prefix="/api")

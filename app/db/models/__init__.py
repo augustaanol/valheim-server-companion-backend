@@ -1,4 +1,9 @@
-from app.db.models.base import Base
-from app.db.models.player import Player
-from .task import Task
-from .comment import Comment
+from .base import Base
+
+import pkgutil
+import importlib
+
+for _, module_name, _ in pkgutil.iter_modules(__path__):
+    importlib.import_module(f"{__name__}.{module_name}")
+
+__all__ = ["Base"]
